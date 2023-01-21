@@ -166,7 +166,7 @@ exports.messageToDoctor = async (req, res, next) => {
 };
 
 const { Configuration, OpenAIApi } = require("openai");
-require('dotenv').config()
+require("dotenv").config();
 
 var responseTxt;
 
@@ -176,14 +176,16 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 exports.doctorAi = async (req, res, next) => {
-  const completion = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt:req.body.question,
-    max_tokens: 1000
-   
-  });
-  res.json({response:completion.data.choices[0].text});
-  // console.log(completion.data.choices[0].text);
+  try {
+    const completion = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: req.body.question,
+      max_tokens: 1000,
+    });
+    res.json({ response: completion.data.choices[0].text });
+    console.log(completion.data.choices[0].text);
+  } catch (error) {
+    console.log(error);
+  }
   // responseTxt = completion.data.choices[0].text;
-
-}
+};
